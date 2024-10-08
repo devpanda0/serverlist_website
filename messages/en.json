@@ -1,0 +1,16 @@
+{
+  "CpNavigation": {
+
+  },
+  "ErrorPages": {
+    "403": {
+      "message": "Unfortunately, you do not have permission to view this page. Please check your credentials or contact the administrator if you believe this is an error.",
+      "title": "Access Denied"
+    },
+    "404": {
+      "message": "Unfortunately, it's just a 404 page. You may have mistyped the address, or the page has been moved to a different URL.",
+      "title": "You've found a secret place."
+    },
+    "backToDashboard": "Back to Dashboard"
+  }
+}

@@ -1,0 +1,87 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../client"
+  previewFeatures = ["prismaSchemaFolder", "omitApi"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model GameType {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name           String @unique
+  logo           String
+  primaryColor   String
+  secondaryColor String
+
+  servers Server[]
+}
+
+model Group {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name    String
+  logo    String
+  servers Server[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Server {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  groupId String? @db.ObjectId
+
+  isOnline Boolean @default(false)
+
+  name             String   @unique
+  ipAddress        String   @unique
+  vanityUrl        String?
+  description      String
+  tags             String[] @default([])
+  gamemode         String
+  website          String?
+  language         String
+  publicVisibility Boolean
+  icon             String?
+  banner           String?
+  promoted         Boolean  @default(false)
+
+  Group Group? @relation(fields: [groupId], references: [id])
+
+  players       Int             @default(0)
+  playerHistory PlayerHistory[]
+  maxPlayers    Int             @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gameType   GameType? @relation(fields: [gameTypeId], references: [id])
+  gameTypeId String?   @db.ObjectId
+}
+
+model PlayerHistory {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  serverId String @db.ObjectId
+
+  playerCount Int
+
+  server Server @relation(fields: [serverId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  token    String
+  ipAdress String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([token, ipAdress])
+}

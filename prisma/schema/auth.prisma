@@ -1,0 +1,29 @@
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  discordId String  @unique
+  username  String  @unique
+  roleId    String
+  banned    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role Role @relation(fields: [roleId], references: [roleId])
+}
+
+model Role {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  roleId     String  @unique
+  default    Boolean @default(false)
+  name       String
+  color      String
+  maxServers Int     @default(5)
+  maxGroups  Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+}
